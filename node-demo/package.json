@@ -1,0 +1,22 @@
+{
+  "name": "node.js-demo",
+  "version": "1.0.0",
+  "description": "my node.js  demo app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saramaher1/front-end-foxes.git"
+  },
+  "author": "Sara Maher",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saramaher1/front-end-foxes/issues"
+  },
+  "homepage": "https://github.com/saramaher1/front-end-foxes#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
