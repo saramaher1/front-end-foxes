@@ -1,24 +1,11 @@
 const cards = document.querySelectorAll(".card");
+const newGameBtn = document.getElementById("new-game-btn");
+const matchedPairsCounter = document.getElementById("matched-pairs");
+const setOfCards = document.querySelector(".cards");
 let matchedPairs = 0;
 let cardOne, cardTwo;
 let disableDeck = false;
 
-function shuffleCards() {
-  matchedPairs = 0; // reset matchedPairs variable to 0
-  disableDeck = false; // reset disableDeck boolean to false
-  cardOne = cardTwo = ""; // reset cardOne and cardTwo variables to empty string
-  let arr = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8]; // create an array of the image numbers, 1-8, twice
-  arr.sort(() => (Math.random() > 0.5 ? 1 : -1)); // randomly sort the array
-
-  cards.forEach((card, i) => {
-    // loop over the set of cards. For each card...
-    card.classList.remove("flip"); // remove the 'flip' class
-    let imgTag = card.querySelector(".back-view img"); // find the back-view image tag by querying all the childNodes of the current card element for the '.back-view img' CSS selector
-    imgTag.src = `images/img-${arr[i]}.png`; // set the value of the src attribute on the current imgTag to a numbered filename based on our randomized array
-    card.addEventListener("click", flipCard); // add a click event listener to the current card to execute a function `flipCard` when clicked
-  });
-}
-shuffleCards();
 function flipCard(evt) {
   // take an event object's as a scoped variable
   const clickedCard = evt.target; // set the event's target DOM element as a variable
@@ -44,35 +31,72 @@ function matchCards(img1, img2) {
   if (img1 === img2) {
     // this code will run if the card images match
     matchedPairs++; // if the card images match, we can increment the global `matchedPairs` variable by 1 match
+    printMatchCount();
     if (matchedPairs == 8) {
       // if your number of matches is 8, you've made all the matches! Game Won!
-      console.log("YOU WIN!");
+      youWin();
       return; // for now, lets call this game over, end this function and do nothing else.
     }
     // everything below will execute if the game has not yet been won...
-    cardOne.removeEventListener("click", flipCard); // remove the eventlistener so that this matched card cannot be flipped anymore
-    cardTwo.removeEventListener("click", flipCard); // remove the eventlistener so that this matched card cannot be flipped anymore
+    cardOne.removeEventListener("click", flipCard); // remove the eventlistener so that this matchedPairs card cannot be flipped anymore
+    cardTwo.removeEventListener("click", flipCard); // remove the eventlistener so that this matchedPairs card cannot be flipped anymore
     cardOne = cardTwo = ""; // now reset the cardOne & cardTwo variables to empty strings, so we can use them again
     disableDeck = false;
     return; // end function
   }
-  // these cards didn't match, un-flip them...
-  cardOne.classList.remove("flip");
-  cardTwo.classList.remove("flip");
-  cardOne = cardTwo = ""; // reset the cardOne & cardTwo variables to empty string
-  disableDeck = false;
-  return;
+
+  setTimeout(() => {
+    cardOne.classList.add("shake");
+    cardTwo.classList.add("shake");
+  }, 400);
+
+  // these cards didn't match so we'll un-flip them, but let the user see them both before they disappear
+  setTimeout(() => {
+    cardOne.classList.remove("shake", "flip");
+    cardTwo.classList.remove("shake", "flip");
+    cardOne = cardTwo = ""; // reset the cardOne & cardTwo variables to empty string
+    disableDeck = false;
+    return;
+  }, 1200);
 }
-setTimeout(() => {
-  cardOne.classList.remove("flip");
-  cardTwo.classList.remove("flip");
-  cardOne = cardTwo = ""; // reset the cardOne & cardTwo variables to empty string
-  disableDeck = false;
-  return;
-}, 1200);
-setTimeout(() => {
-  cardOne.classList.add("shake");
-  cardTwo.classList.add("shake");
-}, 400);
-cardOne.classList.remove("shake", "flip");
-cardTwo.classList.remove("shake", "flip");
+
+function shuffleCards() {
+  matchedPairs = 0; // reset matchedPairs variable to 0
+  disableDeck = false; // reset disableDeck boolean
+  cardOne = cardTwo = ""; // reset cardOne and cardTwo variables
+  let arr = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8]; // create an array of the image numbers, 1-8, twice
+  arr.sort(() => (Math.random() > 0.5 ? 1 : -1)); // randomly sort the array
+
+  cards.forEach((card, i) => {
+    // loop over the set of cards. For each card...
+    card.classList.remove("flip"); // remove the 'flip' class
+    let imgTag = card.querySelector(".back-view img"); // find the back-view image tag by querying all the childNodes of the current card element for the '.back-view img' CSS selector
+    imgTag.src = `images/img-${arr[i]}.png`; // set the value of the src attribute on the current imgTag to a numbered filename based on our randomized array
+    card.addEventListener("click", flipCard); // add the click event listener to the current card to execute a function `flipCard` when clicked
+  });
+}
+
+function newGame() {
+  cards.forEach((card) => {
+    // loop over the set of cards. For each card...
+    card.classList.remove("flip"); // remove the 'flip' class
+  });
+  setOfCards.classList.remove("hide");
+  matchedPairs = 0;
+  printMatchCount();
+  setTimeout(() => {
+    shuffleCards();
+  }, 900);
+}
+
+function printMatchCount() {
+  matchedPairsCounter.innerHTML = matchedPairs;
+}
+
+function youWin() {
+  setOfCards.classList.add("hide");
+  window.confetti();
+}
+
+newGameBtn.addEventListener("click", newGame);
+shuffleCards(); // execute the shuffleCards function

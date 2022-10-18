@@ -1,13 +1,22 @@
 <script>
-export default {};
-</script>
+import CardView from "./CardView.vue";
 
+export default {
+  components: {
+    CardView,
+  },
+};
+</script>
 <template>
   <div class="game-board">
-    <p>I am the GameBoard.vue component</p>
     <ul class="cards">
-      <li class="card">
-        <CardView />
+      <li>
+        <CardView viewType="front" />
+        <CardView
+          viewType="back"
+          :imageUrl="cardInfo.url"
+          :imageAltText="cardInfo.altText"
+        />
       </li>
     </ul>
   </div>

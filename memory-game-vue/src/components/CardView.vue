@@ -1,11 +1,24 @@
 <script>
-import CardView from "./CardView.vue";
-
 export default {
-  components: {
-    CardView,
+  props: {
+    viewType: {
+      type: String,
+      required: true,
+    },
+    imageUrl: {
+      type: String,
+      default: `../static_site/images/que_icon.svg`,
+    },
+    imageAltText: {
+      type: String,
+      default: `hidden card`,
+    },
   },
 };
 </script>
 
-<template></template>
+<template>
+  <div :class="`view ${viewType}-view`">
+    <img :src="imageUrl" :alt="imageAltText" />
+  </div>
+</template>

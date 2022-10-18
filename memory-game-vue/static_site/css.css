@@ -6,11 +6,21 @@
 }
 
 body {
+  min-height: 100vh;
+  background: #6563ff;
+}
+
+h1 {
+  text-align: center;
+  margin: 30px 0 20px;
+  width: 100%;
+  color: #fff;
+}
+
+main {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  background: #6563ff;
 }
 
 .game-board {
@@ -19,6 +29,7 @@ body {
   background: #f8f8f8;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
+
 .cards,
 .card,
 .view {
@@ -45,6 +56,28 @@ body {
   width: calc(100% / 4 - 10px);
 }
 
+.you-win-msg {
+  width: 100%;
+  text-align: center;
+}
+
+.you-win-msg h2 {
+  font-size: 4rem;
+  color: #6563ff;
+}
+
+.cards .you-win-msg {
+  display: none;
+}
+
+.cards.hide .card {
+  visibility: hidden;
+}
+
+.cards.hide .you-win-msg {
+  display: block;
+}
+
 .card .view {
   width: 100%;
   height: 100%;
@@ -64,15 +97,23 @@ body {
 .card .back-view img {
   max-width: 45px;
 }
+
 .card .back-view {
   transform: rotateY(-180deg);
 }
+
 .card.flip .back-view {
   transform: rotateY(0);
 }
+
 .card.flip .front-view {
   transform: rotateY(180deg);
 }
+
+.card.shake {
+  animation: shake 0.35s ease-in-out;
+}
+
 @keyframes shake {
   0%,
   100% {
@@ -91,9 +132,7 @@ body {
     transform: translateX(8px);
   }
 }
-.card.shake {
-  animation: shake 0.35s ease-in-out;
-}
+
 @media screen and (max-width: 700px) {
   .cards {
     height: 350px;
@@ -122,4 +161,32 @@ body {
   .card .back-view img {
     max-width: 35px;
   }
+}
+
+.console {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button,
+.match-count {
+  margin: 20px 0 0;
+  background-color: white;
+  border: 3px solid #6563ff;
+  border-radius: 7px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  padding: 8px;
+  font-size: 1rem;
+}
+
+button:hover,
+.match-count {
+  background-color: #6563ff;
+  color: white;
+}
+
+.match-count {
+  cursor: default;
 }
